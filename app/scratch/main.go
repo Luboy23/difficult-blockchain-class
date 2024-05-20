@@ -1,9 +1,11 @@
 package main
 
 import (
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"log"
+	"math/big"
 
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/crypto"
@@ -106,7 +108,27 @@ func run()  error {
 		}
 	
 		fmt.Println("Pub:",crypto.PubkeyToAddress(*publicKey2).String())
+
+		vv, r, s,err :=	ToVRSFromHexSignature(string(sig2))
+		if err != nil {
+			return fmt.Errorf("unable to VRS: %w", err)
+		}
+
+		fmt.Println("V、R、S",vv, r, s)
 	
 	return nil
+}
+
+func ToVRSFromHexSignature(sigStr string) (v, r, s *big.Int,err error) {
+	sig, err := hex.DecodeString(sigStr[2:])
+	if err != nil {
+		return nil, nil,nil,err
+	}
+
+	r = big.NewInt(0).SetBytes(sig[:32])
+	s = big.NewInt(0).SetBytes(sig[32:64])
+	v = big.NewInt(0).SetBytes([]byte{sig[64]})
+
+	return v, r, s, nil
 }
 
