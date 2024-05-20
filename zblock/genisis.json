@@ -1,0 +1,12 @@
+{
+    "date":"2024-5-20T05:20:00.00000000002",
+    "chain_id":1,   
+    "trans_per_block":10,
+    "difficulty":6,
+    "mining_reward":700,
+    "gas_price":15,
+    "balances":{
+        "232342":1000000,
+        "345345345":100000
+}
+}
